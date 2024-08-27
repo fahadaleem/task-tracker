@@ -44,41 +44,33 @@ function deleteTask(id) {
   const fileData = handleReadFile(filePath);
   let tasks = fileData ? JSON.parse(fileData) : [];
 
-  try {
-    if (!tasks.length) {
-      throw "No data available";
-    } else {
-      const findItemToBeDelete = tasks.find((task) => task.id == id);
-      if (!findItemToBeDelete) throw "No record found with id: " + id;
-      const updatedTasks = tasks.filter((task) => task.id != id);
-      handleWriteFile(filePath, JSON.stringify(updatedTasks));
-      console.log("File deleted successfully");
-    }
-  } catch (err) {
-    console.log(err);
+  if (!tasks.length) {
+    throw "No data available";
+  } else {
+    const findItemToBeDelete = tasks.find((task) => task.id == id);
+    if (!findItemToBeDelete) throw "No record found with id: " + id;
+    const updatedTasks = tasks.filter((task) => task.id != id);
+    handleWriteFile(filePath, JSON.stringify(updatedTasks));
+    console.log("File deleted successfully");
   }
 }
 
 function addTask(task) {
-  fs.readFile(filePath, "utf-8", function (err, data) {
-    // parsing data
-    const tasks = data ? JSON.parse(data) : [];
-    // generating ID
-    const id = tasks.length ? tasks[tasks.length - 1].id + 1 : 1;
-    //   updating task array
-    tasks.push({
-      id,
-      description: task,
-      status: "todo", // default status
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    });
-    // re writing the file
-    fs.writeFile(filePath, JSON.stringify(tasks), function (err) {
-      if (err) throw err;
-      console.log("task added");
-    });
+  const fileData = handleReadFile(filePath);
+  let tasks = fileData ? JSON.parse(fileData) : [];
+
+  // generating ID
+  const id = tasks.length ? tasks[tasks.length - 1].id + 1 : 1;
+  //  updating task array
+  tasks.push({
+    id,
+    description: task,
+    status: "todo", // default status
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
   });
+  handleWriteFile(filePath, JSON.stringify(tasks));
+  console.log("Task added successfully!");
 }
 
 function updateTask(id, updatedTask) {
