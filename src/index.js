@@ -23,6 +23,10 @@ const {
       case "delete":
         {
           const id = args[0];
+          //   if id is not a number then throws an error
+          if (isNaN(id)) {
+            throw "Error: enter a valid id";
+          }
           deleteTask(id);
         }
         break;
@@ -30,6 +34,10 @@ const {
         {
           if (args.length >= 2) {
             const id = args[0];
+            //   if id is not a number then throws an error
+            if (isNaN(id)) {
+              throw "Error: enter a valid id";
+            }
             const updatedTask = args[1];
             updateTask(id, updatedTask);
           } else {
@@ -50,6 +58,10 @@ const {
         {
           if (args.length > 0) {
             const id = args[0];
+            //   if id is not a number then throws an error
+            if (isNaN(id)) {
+              throw "Error: enter a valid id";
+            }
             updateTaskStatus(id, "in-progress");
           } else {
             throw "Error: missing arguement 'id'";
